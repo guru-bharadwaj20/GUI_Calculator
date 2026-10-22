@@ -1,19 +1,111 @@
-# GUI_2
-This Python program creates a simple calculator using Tkinter, allowing users to perform basic arithmetic operations. It features an interactive GUI with buttons for numbers, operators, and functionality to evaluate expressions.
+# GUI Calculator
 
-Features
-1. Basic Arithmetic Operations: Supports addition, subtraction, multiplication, division, and percentage calculations.
-2. Parentheses Support: Allows users to group expressions using parentheses for proper order of operations.
-3. Clear and Evaluate: Includes a "Clear" button to reset the input and an "=" button to evaluate the expression entered.
-4. Responsive UI: The user interface is clean and responsive, with buttons for all necessary digits, operators, and functionality.
-5. Decimal and Zero Support: Users can input decimals and zero values for more precise calculations.
+**A Tkinter calculator — digits, operators, parentheses, percentages and decimals in one small window.**
 
-Code Explanation
-1. Tkinter Setup: The main window (root) is created using Tkinter, and its properties (size, title, color) are configured.
-2. Button Layout: Buttons for digits, operations, and other functionalities are created and positioned using the place() method.
-3. StringVar: The current equation is stored in a StringVar which is linked to an entry widget that updates dynamically as the user enters values.
-4. Eval Function: The eval() function is used to evaluate the mathematical expression entered by the user. This is processed when the "=" button is clicked.
+[![Python](https://img.shields.io/badge/Python-3-3776AB?logo=python&logoColor=white)](Calculator.py)
+[![Tkinter](https://img.shields.io/badge/GUI-Tkinter-informational)](Calculator.py)
+[![Size](https://img.shields.io/badge/one_file-Calculator.py-lightgrey)](Calculator.py)
 
-Limitations
-1. Security Risk: The eval() function can be dangerous if used with untrusted input. In this case, it works because the input is strictly controlled through button clicks, but it is important to be cautious when using eval() in more general scenarios.
-2. Basic Operations Only: This calculator supports only basic arithmetic operations and does not include more complex mathematical functions (like square roots, exponentiation, etc.)
+A first GUI project: a fixed 357 × 420 window, a display bound to a `StringVar`,
+and a grid of buttons that build an expression for Python to evaluate.
+
+---
+
+## Contents
+
+| Section | |
+|---|---|
+| [What it does](#what-it-does) | The features |
+| [Architecture](#architecture) | Window, display, buttons, evaluation |
+| [How a calculation runs](#how-a-calculation-runs) | Press, build, evaluate |
+| [Quick start](#quick-start) | One command |
+| [Project status](#project-status) | Scope and limitations |
+| [Design decisions](#design-decisions) | The tradeoffs, and why |
+| [Team](#team) | Who built it |
+
+---
+
+## What it does
+
+| Area | Capabilities |
+|---|---|
+| **Arithmetic** | Addition, subtraction, multiplication, division and percentages |
+| **Grouping** | Parentheses for order of operations |
+| **Input** | Decimals and zero, entered by button |
+| **Controls** | Clear resets the input; `=` evaluates it |
+| **Display** | Updates live as each button is pressed |
+
+---
+
+## Architecture
+
+```mermaid
+graph LR
+    BTN["Buttons<br/>digits · operators · ( ) · % · C · ="] --> VAR["StringVar<br/>current expression"]
+    VAR --> ENTRY["Entry widget<br/>display"]
+    BTN -->|"="| EVAL["eval()"]
+    EVAL --> VAR
+```
+
+The window, its title and colours are configured on the root; buttons are
+positioned with `place()`.
+
+---
+
+## How a calculation runs
+
+```mermaid
+sequenceDiagram
+    participant U as You
+    participant B as Buttons
+    participant S as StringVar
+    participant E as eval()
+
+    U->>B: 1 2 + ( 3 * 4 )
+    B->>S: append each symbol
+    S-->>U: display updates
+    U->>B: =
+    B->>E: evaluate the expression
+    E-->>S: result
+    S-->>U: 24
+```
+
+---
+
+## Quick start
+
+```bash
+python Calculator.py
+```
+
+Python 3 with Tkinter (bundled with most Python installs). No other dependencies.
+
+---
+
+## Project status
+
+Complete as a first GUI project.
+
+| Limitation | Detail |
+|---|---|
+| `eval()` | Safe here only because input comes from buttons; it would be dangerous on free-typed input |
+| Basic operations only | No square roots, exponents or other functions |
+
+---
+
+## Design decisions
+
+**Let Python do the arithmetic.** Building the expression as a string and handing
+it to `eval()` gives correct precedence and parentheses for free — acceptable
+because the only input path is the button grid.
+
+**One `StringVar` as the source of truth.** The display is bound to it, so every
+button only has to update one value.
+
+---
+
+## Team
+
+| Member | Focus |
+|---|---|
+| **Guru R Bharadwaj** | The whole thing |
